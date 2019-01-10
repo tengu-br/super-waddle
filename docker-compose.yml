@@ -1,0 +1,7 @@
+version: '3'
+
+services:
+  web01:
+    build:
+      context: .
+      dockerfile: ./Dockerfile
