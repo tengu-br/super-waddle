@@ -5,3 +5,12 @@ services:
     build:
       context: .
       dockerfile: ./Dockerfile
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 3
+        window: 120s
+    ports:
+      - "8000:80"
