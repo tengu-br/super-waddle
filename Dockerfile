@@ -1,5 +1,4 @@
-FROM wordpress:php7.3-fpm-alpine
+FROM wordpress:latest
 
 #TO-DO
-
 CMD ["php-fpm"]
