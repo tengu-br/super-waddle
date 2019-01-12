@@ -7,8 +7,6 @@ services:
     restart: always
     ports:
       - 8001:80
-    expose:
-      - "8001"
     environment:
       WORDPRESS_DB_HOST: db
       WORDPRESS_DB_USER: exampleuser
@@ -23,8 +21,6 @@ services:
     restart: always
     ports:
       - 8002:80
-    expose:
-      - "8002"
     environment:
       WORDPRESS_DB_HOST: db
       WORDPRESS_DB_USER: exampleuser
