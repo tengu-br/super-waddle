@@ -7,6 +7,8 @@ services:
     restart: always
     ports:
       - 8001:80
+    expose:
+      - "8001"
     environment:
       WORDPRESS_DB_HOST: db
       WORDPRESS_DB_USER: exampleuser
@@ -21,6 +23,8 @@ services:
     restart: always
     ports:
       - 8002:80
+    expose:
+      - "8002"
     environment:
       WORDPRESS_DB_HOST: db
       WORDPRESS_DB_USER: exampleuser
@@ -38,6 +42,16 @@ services:
       MYSQL_USER: exampleuser
       MYSQL_PASSWORD: examplepass
       MYSQL_RANDOM_ROOT_PASSWORD: '1'
+    networks:
+      - darkweb
+      - mainet
+  nginx:
+    build:
+      context: .
+      dockerfile: ./nginxDockerfile
+    ports:
+      - "80:80"
+    restart: always
     networks:
       - darkweb
       - mainet
