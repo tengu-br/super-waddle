@@ -1,4 +1,3 @@
-FROM wordpress:latest
+FROM nginx:alpine
+COPY nginx.conf /etc/nginx/nginx.conf
 
-#TO-DO
-CMD ["php-fpm"]
