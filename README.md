@@ -6,6 +6,7 @@ Código base para hospedar múltiplos sites wordpress de maneira rápida e efica
 
 * Compartilhamento de banco de dados
 * Proxy reverso
+* MariaDB
 
 # Pendências
 
