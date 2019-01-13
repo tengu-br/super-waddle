@@ -7,10 +7,10 @@ Código base para hospedar múltiplos sites wordpress de maneira rápida e efica
 * Compartilhamento de banco de dados
 * Proxy reverso
 * MariaDB
+* Repositório auxiliar com temas e plugins
 
 # Pendências
 
 * Usar imagem Alpine-FPM
 * Trocar apache por nginx
-* Criar repositório auxiliar de temas e plugins
 * Documentar/Explicar código e projeto
