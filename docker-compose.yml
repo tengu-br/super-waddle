@@ -1,4 +1,4 @@
-version: '3.1'
+version: '3.6'
 
 services:
 
@@ -31,7 +31,8 @@ services:
       - mainet
 
   db:
-    image: mysql:5.7
+    image: mariadb
+    container_name: mysql
     restart: always
     environment:
       MYSQL_DATABASE: exampledb
