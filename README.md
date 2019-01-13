@@ -13,4 +13,3 @@ Código base para hospedar múltiplos sites wordpress de maneira rápida e efica
 * Trocar apache por nginx
 * Criar repositório auxiliar de temas e plugins
 * Documentar/Explicar código e projeto
-* Tutorial de como subir o projeto
