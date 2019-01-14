@@ -4,11 +4,13 @@ services:
 
   wordpress1:
     image: wordpress:latest
+    volumes:
+      - ./plugin:/var/www/html/wp-content/plugins/:rw
+      - ./themes:/var/www/html/wp-content/themes/:rw
     restart: always
     ports:
       - 8001:80
-    expose:
-      - "8001"
+   
     environment:
       WORDPRESS_DB_HOST: db
       WORDPRESS_DB_USER: exampleuser
@@ -46,11 +48,11 @@ services:
       - darkweb
       - mainet
   nginx:
-    build:
-      context: .
-      dockerfile: ./Dockerfile
+    build: .    
     ports:
       - "80:80"
+    volumes:
+      - ./plugins:/etc/plugins/:rw
     restart: always
     networks:
       - darkweb
