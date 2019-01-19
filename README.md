@@ -9,7 +9,7 @@ A principio apenas um :
 git clone  https://github.com/tengu-br/super-waddle.git
 docker-compose up
 ```
-É suficiente para subir o projeto. Basta mudar o domínio nas configurações do proxy em proxy.conf
+É suficiente para subir o projeto. Basta mudar o domínio nas configurações do proxy em proxy.conf para os domínios desejados.
 
 ## Extra
 
@@ -48,7 +48,7 @@ volumes:
       mountpoint: /home/super-waddle/assets
 
 ```
- *ps: a isntalação será feita em inglês mas é possível mudar o idioma mais tarde.*
+ *ps: a instalação será feita em inglês mas é possível mudar o idioma mais tarde.*
 # Desenvolvimento
 
 Acompanhe o progresso do projeto pela aba "Projects"
