@@ -4,7 +4,10 @@ services:
 
   wordpress1:
     image: wordpress:latest
+    container_name: wordpress1
     restart: always
+#    volumes:
+#      - assetsVolume:/var/www/html/wp-content/
     ports:
       - 8001:80
     environment:
@@ -18,7 +21,10 @@ services:
 
   wordpress2:
     image: wordpress:latest
+    container_name: wordpress2
     restart: always
+#    volumes:
+#      - assetsVolume:/var/www/html/wp-content/
     ports:
       - 8002:80
     environment:
@@ -46,6 +52,7 @@ services:
     build:
       context: .
       dockerfile: ./Dockerfile
+    container_name: proxy
     ports:
       - "80:80"
     restart: always
@@ -56,3 +63,9 @@ services:
 networks:
   darkweb:
   mainet:
+
+#volumes:
+#  assetsVolume:
+#    driver: local-persist
+#    driver_opts:
+#      mountpoint: /home/super-waddle/assets
