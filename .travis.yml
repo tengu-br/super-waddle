@@ -9,5 +9,5 @@ branches:
 
 script:
   - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
-  - docker build -t $DOCKER_USERNAME/proxy:$TRAVIS_BRANCH .
-  - docker push $DOCKER_USERNAME/proxy:$TRAVIS_BRANCH
+  - docker build -t superwaddle/proxy:$TRAVIS_BRANCH .
+  - docker push superwaddle/proxy:$TRAVIS_BRANCH
