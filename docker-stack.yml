@@ -59,7 +59,7 @@ services:
         condition: on-failure
 
   nginx:
-    image: superwaddle/proxy
+    image: superwaddle/proxy:master
     ports:
       - "80:80"
     restart: always
