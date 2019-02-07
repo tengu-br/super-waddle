@@ -4,7 +4,6 @@ services:
 
   wordpress1:
     image: wordpress:latest
-    container_name: wordpress1
     restart: always
     ports:
       - 8001:80
@@ -24,7 +23,6 @@ services:
 
   wordpress2:
     image: wordpress:latest
-    container_name: wordpress2
     restart: always
     ports:
       - 8002:80
@@ -43,7 +41,6 @@ services:
 
   db:
     image: mariadb
-    container_name: mysql
     restart: always
     environment:
       MYSQL_DATABASE: exampledb
