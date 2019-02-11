@@ -36,6 +36,35 @@ services:
     networks:
       - mainet
 
+  nginx1:
+    image: nginx:${NGINX_VERSION:-latest}
+    container_name: nginx1
+    volumes:
+      - ${NGINX_CONF_DIR:-./nginx1}:/etc/nginx/conf.d
+      - ${WORDPRESS_DATA_DIR:-./wordpress1}:/var/www/html
+    depends_on:
+      - wordpress1
+    restart: always
+    ports:
+      - 8001:80
+    networks:
+      - darkweb
+
+  nginx2:
+    image: nginx:${NGINX_VERSION:-latest}
+    container_name: nginx2
+    volumes:
+      - ${NGINX_CONF_DIR:-./nginx2}:/etc/nginx/conf.d
+      - ${WORDPRESS_DATA_DIR:-./wordpress2}:/var/www/html
+    depends_on:
+      - wordpress2
+    restart: always
+    ports:
+      - 8002:80
+    networks:
+      - mainet
+
+
   db:
     image: mariadb
     container_name: mysql
@@ -57,40 +86,6 @@ services:
     ports:
       - "80:80"
     restart: always
-    networks:
-      - darkweb
-      - mainet
-
-  nginx1:
-    image: nginx:${NGINX_VERSION:-latest}
-    container_name: nginx1
-    # ports:
-    #   - '80:80'
-    volumes:
-      - ${NGINX_CONF_DIR:-./nginx1}:/etc/nginx/conf.d
-      - ${WORDPRESS_DATA_DIR:-./wordpress2}:/var/www/html
-    depends_on:
-      - wordpress2
-    restart: always
-    ports:
-      - 8002:80
-    networks:
-      - darkweb
-      - mainet
-
-  nginx:
-    image: nginx:${NGINX_VERSION:-latest}
-    container_name: nginx
-    # ports:
-    #   - '80:80'
-    volumes:
-      - ${NGINX_CONF_DIR:-./nginx}:/etc/nginx/conf.d
-      - ${WORDPRESS_DATA_DIR:-./wordpress1}:/var/www/html
-    depends_on:
-      - wordpress1
-    restart: always
-    ports:
-      - 8001:80
     networks:
       - darkweb
       - mainet
