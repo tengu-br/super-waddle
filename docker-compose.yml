@@ -3,13 +3,13 @@ version: '3.6'
 services:
 
   wordpress1:
-    image: wordpress:latest
+    image: wordpress:${WORDPRESS_VERSION:-php7.3-fpm}
     container_name: wordpress1
     restart: always
+    volumes:
+      - ./wordpress1:/var/www/html
 #    volumes:
 #      - assetsVolume:/var/www/html/wp-content/
-    ports:
-      - 8001:80
     environment:
       WORDPRESS_DB_HOST: db
       WORDPRESS_DB_USER: exampleuser
@@ -20,13 +20,13 @@ services:
       - darkweb
 
   wordpress2:
-    image: wordpress:latest
+    image: wordpress:${WORDPRESS_VERSION:-php7.3-fpm}
     container_name: wordpress2
     restart: always
+    volumes:
+      - ./wordpress2:/var/www/html
 #    volumes:
 #      - assetsVolume:/var/www/html/wp-content/
-    ports:
-      - 8002:80
     environment:
       WORDPRESS_DB_HOST: db
       WORDPRESS_DB_USER: exampleuser
@@ -48,7 +48,8 @@ services:
     networks:
       - darkweb
       - mainet
-  nginx:
+
+  proxy:
     build:
       context: .
       dockerfile: ./Dockerfile
@@ -56,6 +57,40 @@ services:
     ports:
       - "80:80"
     restart: always
+    networks:
+      - darkweb
+      - mainet
+
+  nginx1:
+    image: nginx:${NGINX_VERSION:-latest}
+    container_name: nginx1
+    # ports:
+    #   - '80:80'
+    volumes:
+      - ${NGINX_CONF_DIR:-./nginx1}:/etc/nginx/conf.d
+      - ${WORDPRESS_DATA_DIR:-./wordpress2}:/var/www/html
+    depends_on:
+      - wordpress2
+    restart: always
+    ports:
+      - 8002:80
+    networks:
+      - darkweb
+      - mainet
+
+  nginx:
+    image: nginx:${NGINX_VERSION:-latest}
+    container_name: nginx
+    # ports:
+    #   - '80:80'
+    volumes:
+      - ${NGINX_CONF_DIR:-./nginx}:/etc/nginx/conf.d
+      - ${WORDPRESS_DATA_DIR:-./wordpress1}:/var/www/html
+    depends_on:
+      - wordpress1
+    restart: always
+    ports:
+      - 8001:80
     networks:
       - darkweb
       - mainet
