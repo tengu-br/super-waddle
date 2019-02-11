@@ -10,8 +10,6 @@ services:
       - ./wordpress1:/var/www/html
 #    volumes:
 #      - assetsVolume:/var/www/html/wp-content/
-    ports:
-      - 8001:80
     environment:
       WORDPRESS_DB_HOST: db
       WORDPRESS_DB_USER: exampleuser
@@ -29,8 +27,6 @@ services:
       - ./wordpress2:/var/www/html
 #    volumes:
 #      - assetsVolume:/var/www/html/wp-content/
-    ports:
-      - 8002:80
     environment:
       WORDPRESS_DB_HOST: db
       WORDPRESS_DB_USER: exampleuser
@@ -76,6 +72,8 @@ services:
     depends_on:
       - wordpress2
     restart: always
+    ports:
+      - 8002:80
     networks:
       - darkweb
       - mainet
@@ -91,6 +89,8 @@ services:
     depends_on:
       - wordpress1
     restart: always
+    ports:
+      - 8001:80
     networks:
       - darkweb
       - mainet
