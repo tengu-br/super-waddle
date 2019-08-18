@@ -1,0 +1,225 @@
+#In this example five WordPress sites and one Ghost site are being created.
+#Each WordPress installation requires a separate nginx service, while Ghost is "standalone"
+#Modify this file to match your requirements by either removing or copy/pasting the services
+#If you change the wordpress service names make sure to reflect the change under the nginx folders
+
+version: '3.6'
+
+services:
+
+# WORDPRESS CONTAINERS
+  wordpress1:
+    image: wordpress:${WORDPRESS_VERSION:-php7.3-fpm}
+    container_name: wordpress1
+    restart: always
+    volumes:
+      - ./wordpress1:/var/www/html
+      - ./uploads.ini:/usr/local/etc/php/conf.d/uploads.ini 
+    environment:
+      WORDPRESS_DB_HOST: db
+      WORDPRESS_DB_USER: exampleuser
+      WORDPRESS_DB_PASSWORD: examplepass
+      WORDPRESS_DB_NAME: exampledb
+      WORDPRESS_TABLE_PREFIX: web01
+    networks:
+      - darkweb
+
+  wordpress2:
+    image: wordpress:${WORDPRESS_VERSION:-php7.3-fpm}
+    container_name: wordpress2
+    restart: always
+    volumes:
+      - ./wordpress2:/var/www/html
+      - ./uploads.ini:/usr/local/etc/php/conf.d/uploads.ini 
+    environment:
+      WORDPRESS_DB_HOST: db
+      WORDPRESS_DB_USER: exampleuser
+      WORDPRESS_DB_PASSWORD: examplepass
+      WORDPRESS_DB_NAME: exampledb
+      WORDPRESS_TABLE_PREFIX: web02
+    networks:
+      - mainet
+
+  wordpress3:
+    image: wordpress:${WORDPRESS_VERSION:-php7.3-fpm}
+    container_name: wordpress3
+    restart: always
+    volumes:
+      - ./wordpress3:/var/www/html
+      - ./uploads.ini:/usr/local/etc/php/conf.d/uploads.ini 
+    environment:
+      WORDPRESS_DB_HOST: db
+      WORDPRESS_DB_USER: exampleuser
+      WORDPRESS_DB_PASSWORD: examplepass
+      WORDPRESS_DB_NAME: exampledb
+      WORDPRESS_TABLE_PREFIX: web03
+    networks:
+      - spiderweb
+
+  wordpress4:
+    image: wordpress:${WORDPRESS_VERSION:-php7.3-fpm}
+    container_name: wordpress4
+    restart: always
+    volumes:
+      - ./wordpress4:/var/www/html
+      - ./uploads.ini:/usr/local/etc/php/conf.d/uploads.ini 
+    environment:
+      WORDPRESS_DB_HOST: db
+      WORDPRESS_DB_USER: exampleuser
+      WORDPRESS_DB_PASSWORD: examplepass
+      WORDPRESS_DB_NAME: exampledb
+      WORDPRESS_TABLE_PREFIX: web04
+    networks:
+      - abinet
+
+  wordpress5:
+    image: wordpress:${WORDPRESS_VERSION:-php7.3-fpm}
+    container_name: wordpress5
+    restart: always
+    volumes:
+      - ./wordpress5:/var/www/html
+      - ./uploads.ini:/usr/local/etc/php/conf.d/uploads.ini 
+    environment:
+      WORDPRESS_DB_HOST: db
+      WORDPRESS_DB_USER: exampleuser
+      WORDPRESS_DB_PASSWORD: examplepass
+      WORDPRESS_DB_NAME: exampledb
+      WORDPRESS_TABLE_PREFIX: web05
+    networks:
+      - lastnet
+# NGINX (FOR WORDPRESS) CONTAINERS
+  nginx1:
+    image: nginx:${NGINX_VERSION:-latest}
+    container_name: nginx1
+    volumes:
+      - ${NGINX_CONF_DIR:-./nginx1}:/etc/nginx/conf.d
+      - ${WORDPRESS_DATA_DIR:-./wordpress1}:/var/www/html
+    depends_on:
+      - wordpress1
+    restart: always
+    ports:
+      - 8001:80
+    networks:
+      - darkweb
+
+  nginx2:
+    image: nginx:${NGINX_VERSION:-latest}
+    container_name: nginx2
+    volumes:
+      - ${NGINX_CONF_DIR:-./nginx2}:/etc/nginx/conf.d
+      - ${WORDPRESS_DATA_DIR:-./wordpress2}:/var/www/html
+    depends_on:
+      - wordpress2
+    restart: always
+    ports:
+      - 8002:80
+    networks:
+      - mainet
+      
+  nginx3:
+    image: nginx:${NGINX_VERSION:-latest}
+    container_name: nginx3
+    volumes:
+      - ${NGINX_CONF_DIR:-./nginx3}:/etc/nginx/conf.d
+      - ${WORDPRESS_DATA_DIR:-./wordpress3}:/var/www/html
+    depends_on:
+      - wordpress3
+    restart: always
+    ports:
+      - 8003:80
+    networks:
+      - spiderweb
+
+  nginx4:
+    image: nginx:${NGINX_VERSION:-latest}
+    container_name: nginx4
+    volumes:
+      - ${NGINX_CONF_DIR:-./nginx4}:/etc/nginx/conf.d
+      - ${WORDPRESS_DATA_DIR:-./wordpress4}:/var/www/html
+    depends_on:
+      - wordpress4
+    restart: always
+    ports:
+      - 8004:80
+    networks:
+      - abinet
+
+  nginx5:
+    image: nginx:${NGINX_VERSION:-latest}
+    container_name: nginx5
+    volumes:
+      - ${NGINX_CONF_DIR:-./nginx5}:/etc/nginx/conf.d
+      - ${WORDPRESS_DATA_DIR:-./wordpress5}:/var/www/html
+    depends_on:
+      - wordpress5
+    restart: always
+    ports:
+      - 8005:80
+    networks:
+      - lastnet
+# DATABASE (FOR WORDPRESS) CONTAINER
+  db:
+    image: mariadb
+    container_name: mysql
+    restart: always
+    environment:
+      MYSQL_DATABASE: exampledb
+      MYSQL_USER: exampleuser
+      MYSQL_PASSWORD: examplepass
+      MYSQL_RANDOM_ROOT_PASSWORD: '1'
+    networks:
+      - darkweb
+      - mainet
+      - spiderweb
+      - abinet
+      - lastnet
+
+#GHOST CONTAINERS
+  ghost1:
+    image: ghost:alpine
+    restart: always
+    ports:
+      - 8006:2368
+    environment:
+      # see https://docs.ghost.org/docs/config#section-running-ghost-with-config-env-variables
+      database__client: mysql
+      database__connection__host: ghost_db
+      database__connection__user: root
+      database__connection__password: example
+      database__connection__database: ghost
+    networks:
+      - ghostnet
+
+  ghost_db:
+    image: mysql:5.7
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: example
+    networks:
+      - ghostnet
+      
+# PROXY CONTAINER FOR ALL SERVICES
+  proxy:
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    container_name: proxy
+    ports:
+      - "80:80"
+    restart: always
+    networks:
+      - darkweb
+      - mainet
+      - spiderweb
+      - abinet
+      - lastnet
+      - ghostnet
+
+#The network names are arbitrary, just make sure to change them accordingly
+networks:
+  darkweb:
+  mainet:
+  spiderweb:
+  abinet:
+  lastnet:
+  ghostnet:
