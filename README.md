@@ -13,6 +13,7 @@ git clone  https://github.com/tengu-br/super-waddle.git
 **2.** After doing so, change the parameters in nginx.conf to match your domains to the services
 
 **3.** Adjust docker-compose.yml, nginx.conf and the nginx folders to your need. (For example, if you only need two WordPress websites, you can delete wordpress3, wordpress4, wordpress5, nginx3, nginx4, nginx5, ghost1 and ghost_db)
+
 **4.** Test your configuration
 ```
 docker-compose up
