@@ -19,3 +19,5 @@ git clone  https://github.com/tengu-br/super-waddle.git
 docker-compose up
 ```
 If it is working, then congratulations. If not, make sure the services names match in the nginx folder and docker-compose.yml and proxy.conf
+
+#DESCONTINUADO
